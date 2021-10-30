@@ -1,0 +1,319 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+
+%formatting
+\usepackage[a4paper,hmargin=0.75in, vmargin=1.2in]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage{enumitem}
+
+%graphics package
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%float
+\usepackage{floatrow}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{multicol}
+
+%hyperlinks and toc
+\usepackage{hyperref}
+\usepackage{tocloft}
+\renewcommand{\cftsecfont}{\normalfont}
+
+%header and footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{190050002}
+\rhead{Aakriti}
+\cfoot{Page \thepage}
+\renewcommand{\footrulewidth}{1pt}
+
+%mathematics packages
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{esint}
+\usepackage{tcolorbox}
+\usepackage{commath}
+\usepackage{mathtools} 
+\usepackage{algorithm2e}
+\title{CS 335\\Assignment 4}
+\author{Aakriti }
+\date{Due 29th October 2021}
+
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{3}
+
+\begin{document}
+
+% \renewcommand{\familydefault}{\sfdefault} {\sffamily \maketitle \tableofcontents} 
+% \renewcommand{\familydefault}{\rmdefault}
+
+\maketitle
+\tableofcontents
+\thispagestyle{fancy}
+
+\pagebreak
+
+% \sffamily
+
+%%https://www.overleaf.com/2651982579gxdvbrrgbsyj
+\section{Clustering}
+\subsection{CS 335: KMeans Implementation}
+
+\subsubsection{(i)}
+Refer to \verb|assignment_4.ipynb| for the code.
+
+\subsubsection{(ii)}
+K-means clustering algorithm is implemented which stops if which takes a maximum of \textbf{1000 iterations} and stops early if distance between each of the old and new cluster centers is less than epsilon $\mathbf{\epsilon = 10^{-8}}$.\\
+
+\textbf{DATASET 1}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{og1.png}
+    \caption{Original Data}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.32\linewidth]{k1-s1.png}
+    \includegraphics[width=0.32\linewidth]{k1-s2.png}
+    \includegraphics[width=0.32\linewidth]{k1-s3.png}
+    \caption{K-means clustered data with maximum iterations = 1000, epsilon $\mathbf{\epsilon = 10^{-8}}$}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.32\linewidth]{k1-s1-1000.png}
+    \includegraphics[width=0.32\linewidth]{k1-s2-1000.png}
+    \includegraphics[width=0.32\linewidth]{k1-s3-1000.png}
+    \caption{K-means clustered data with maximum iterations = 1000, epsilon $\mathbf{\epsilon = 0}$}
+\end{figure}
+
+\textbf{DATASET 2}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{og2.png}
+    \caption{Original Data}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.32\linewidth]{k2-s1.png}
+    \includegraphics[width=0.32\linewidth]{k2-s2.png}
+    \includegraphics[width=0.32\linewidth]{k2-s3.png}
+    \caption{K-means clustered data with maximum iterations = 1000, epsilon $\epsilon = 10^{-8}$}
+\end{figure}
+
+\textbf{DATASET 3}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{og3.png}
+    \caption{Original Data}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.32\linewidth]{k3-s1.png}
+    \includegraphics[width=0.32\linewidth]{k3-s2.png}
+    \includegraphics[width=0.32\linewidth]{k3-s3.png}
+    \caption{K-means clustered data with maximum iterations = 1000, epsilon $\epsilon = 10^{-8}$}
+\end{figure}
+
+\textbf{Comments - }
+\begin{itemize}
+    \item For linearly separable dataset with spherical clusters, if initialization is good, K-means can find can find the optimal clusters and converge in a reasonable amount of time.
+    \item Since it uses euclidean distance for assigning points to centroids, K-means clustering is not suited to all datasets. K-means may NOT perform well in the following cases - 
+    \begin{enumerate}
+        \item Clusters are non-spherical or non-convex shaped as is seen in case of Dataset 2
+        \item Clusters are non-linearly separable as is seen in case of Dataset 2 and 3
+        \item Cluster centroids have poor initialization as is seen in the case of Dataset 1 with seed = {21250}
+        \item Data has outliers. We do not see a clear example of this, but it can be inferred from some runs on Dataset 1 that outliers add unnecessary noise and negatively affect the position of centroids \item Clusters are of unequal size or data points of one cluster are much more spread apart more than others. Being based on distance, K-means algorithm does not let data points that are far-away from each other share the same cluster as seen in Dataset 3.
+    \end{enumerate}
+    
+    \item Clusters formed upon convergence are \underline{heavily dependent on the initialization of centroids}.\\
+    So, if the initialization is good, algorithm converges quickly to the optimal clusters, but if initialization is bad, even after taking 1000 iterations of the K-means algorithm, the clusters remain almost the same in the above datasets.
+    \item For the given datasets, if the condition for convergence is that the distance between each of the old and new cluster centers is less than epsilon $\epsilon = 10^{-8}$, algorithm converges in less than 100 iterations. 
+    
+    % Kernel trick allows us to project our data into a higher dimensional space to achieve linear separability and solve the K-Means problem in a more efficient way
+\end{itemize}
+
+\subsubsection{(iii)}
+% \textit{What would be a good initialisation for the K-means algorithm? Briefly justify your choice.}\\
+
+A good centroid initialization should ensure that the initial cluster centers are placed as close as possible to the optimal cluster centers.\\
+
+\textbf{A) Initialisation method chosen in code -} \\
+For k clusters, randomly chose k unique points from the dataset as initial centroids for clusters.
+
+\textbf{Justification of choice - }
+\begin{itemize}
+    \item A fast initialisation with linear time complexity and straightforward to implement
+    \item As clusters detected through k-Means are more probable to be near the modes present in data, by randomly choosing points from data, we are making it more probable to get a point that lies close to the modes
+    \item In cases such as Dataset 1,where clusters are spread apart and well separated, this method is more likely to find initial centroids that are spread apart too, and more likely belonging to different clusters. 
+\end{itemize}
+
+\textbf{B) Alternative initialisation method tested in code -} \\
+For k clusters, randomly assign each point in the data to a random \texttt{cluster\_id $\in$ \{1, 2, ...k\}}. For each \texttt{cluster\_id}, take mean of all points assigned to that \texttt{cluster\_id} as the initial centroid for that cluster. 
+
+\textbf{Justification for not choosing this method - }
+\begin{itemize}
+    \item The initial points chosen lie very close to the global mean of the data. So, initial centroids are lie close to each other and can cause confusion in clusters. 
+    \item K-means is more likely to get stuck in Local Optima if initialized using this method.
+\end{itemize}
+\vskip 0.2in
+
+
+\textbf{\large Empirical comparison of (A) and (B) - }
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{init2-s1.png}
+    \includegraphics[width=0.3\linewidth]{init2-s2.png}
+    \includegraphics[width=0.3\linewidth]{init2-s3.png}
+    \caption{K-means clustered data with initialisation method of \textbf{(A)} $\epsilon = 10^{-8}$}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{init1-s1.png}
+    \includegraphics[width=0.3\linewidth]{init1-s2.png}
+    \includegraphics[width=0.3\linewidth]{init1-s3.png}
+    \caption{K-means clustered data with initialisation method of \textbf{(B)} $\epsilon = 10^{-8}$}
+\end{figure}
+
+As we can see in runs for three different seeds, (A) performs better than (B) in most cases.\\
+
+\textbf{C) A better possible initialisation method -}
+
+\begin{enumerate}
+    \item Choose a random point from the data
+    \item Choose the next point such that is more probable to lie at a large distance from the first point. For this, sample a point from a probability distribution that is proportional to the squared distance of a point from the first center.
+    \item The remaining points are generated by a probability distribution that is proportional to the squared distance of each point from its closest center. So, a point having a large distance from its closest center is more likely to be sampled.
+\end{enumerate}
+
+\textbf{Justification for this method - } 
+\begin{itemize}
+    % \item If 2 points belonging to the same cluster are initialized as centroids of different clusters, it can lead to issues due to reasons described in previous question. This method ensures that points chosen as far apart as possible.
+    \item Here we see that, a point having a large distance from its closest center is more likely to be sampled as initial centroid.
+    \item The effect is an attempt to push the centroids as far from one another as possible, covering as much of the occupied data space as they can from initialization. This would greatly reduce the probability that 2 points belonging to the same cluster are sampled as initial centroids of different clusters. So, in case of linearly separable datasets, this would be optimal.
+    
+\end{itemize}
+
+
+We can see that \textbf{(C)} would be the most ideal initialization method but since for this question, we are provided relatively simple datasets, \textbf{(A)} performs fairly well too and so, has been implemented in code.
+
+
+% TO BE ADDED
+
+% https://medium.com/analytics-vidhya/comparison-of-initialization-strategies-for-k-means-d5ddd8b0350e
+
+
+
+%  
+ 
+ \pagebreak
+ \section{Kernel design and Kernelized clustering
+}
+
+\subsection{CS 337: Proving kernel validity}
+\textit{Prove that the function $K_{\sigma}:\mathbb{R}^n \times \mathbb{R}$ defined as $K_{\sigma}(\boldsymbol{x, y}) = \exp\big(\frac{-\|\boldsymbol{x-y}\|^2}{2\sigma^2}\big)$is a valid Kernel. You may use the properties proved in class.}
+
+
+We prove using the following properties - 
+\begin{enumerate}[label=(\alph*)]
+    \item Sum Closure: If $K_1(x, y)$ and $K_2(x, y)$ are valid kernels, then $K_1(x, y)+ K_2(x, y)$ is a valid kernel [from slides]
+    \item {Product Closure}: If $K_1(x, y)$ and $K_2(x, y)$ are valid kernels, then $K_1(x, y) \times K_2(x, y)$ is a valid kernel [from slides]
+    \item {Positive Scaling}: If $K(x, y)$ is a valid kernel, then $\alpha K(x, y)$ is also a valid kernel for $\alpha > 0$. \\
+    Since $\phi$ is a feature map for $K(x, y)$, $\sqrt{\alpha}\phi$ is valid feature map for $\alpha \times K(x, y)$
+    \item Any positive (or even non negative) constant is a valid kernel i.e., $K(x, y) = a$ for $a\geq 0$ is a valid kernel.\\
+    Since we can construct a feature space $\phi(x)$, such that $\phi(x) = [\sqrt{a}]$
+    \item If $K(x, y)$ is avlid kernel, then $e^{K(x, y)}$ is also a valid kernel.\\
+    
+    Since, we can expand the above by Taylor series expansion, we have - 
+    \[e^{K(x, y)} = \sum_{i=0}^{\infty} \dfrac{K(x, y)^i}{i!}\]
+    
+    \begin{itemize}[label={--}]
+        \item Now, each term of $\dfrac{K(x, y)^i}{i!}$ is valid kernel.
+        \item $K(x, y)^i$ is a valid kernel as, by using Product closure of kernels (b), we multiply $K(x, y)$, a valid kernel $i$ times to get $K(x, y)^i$.
+        \item Since, $i!$ is just a constant $> 0$, we can apply Positive scaling (c) to a valid kernel $K(x, y)^i$ with constant $\dfrac{1}{i!} > 0$ to get valid kernel $\dfrac{K(x, y)^i}{i!}$.
+        \item For $i=0$, the constant 1 is also a vlaid kernel by reasoning of (d) shown above.
+        \item Now, as each individual term of the summation $\sum_{i=0}^{\infty} \dfrac{K(x, y)^i}{i!}$ is a vlid kernel by Sum closure of kernels (a) we have that their sum is also a valid kernel.
+    \end{itemize}
+    
+    Thus, the whole expression $e^{K(x, y)}$ is a valid kernel.\\
+\end{enumerate}
+
+    Since $e^{K(x, y)}$ is a valid kernel, there exists a feature map $\phi: \mathbb{R}^m \rightarrow H$ where, $H$ is a Hilbert space, such that - 
+    \[e^{K(x, y)} = \phi(x)^T\phi(y)\]
+    
+    Since $x^Ty$ is a valid kernel (when $\phi(x) = x$) thus, by positive scaling (c) we have that $\dfrac{x^Ty}{\sigma^2}$ is also a valid kernel.\\
+    
+    Let us assume - 
+    \[\exp\bigg({\frac{x^Ty}{\sigma^2}}\bigg) = \phi(x)^T\phi(y)\]
+    So we have - 
+    \begin{align*}
+        \exp\bigg({\frac{-\|x-y\|^2}{2\sigma^2}}\bigg) &= \exp\bigg({ \frac{-\|x\|^2}{2\sigma^2} + \frac{-\|y\|^2}{2\sigma^2} + \frac{2x^Ty}{2\sigma^2} }\bigg)\\
+        &= \exp{\bigg(\frac{-\|x\|^2}{2\sigma^2}\bigg)} \times \exp{\bigg(\frac{x^Ty}{\sigma^2}\bigg)} \times \exp{\bigg(\frac{-\|y\|^2}{2\sigma^2}\bigg)}\;\;\;\; [Rearranging]\\
+        &= \exp{\bigg(\frac{-\|x\|^2}{2\sigma^2}\bigg)} \phi(x)^T\phi(y) \exp{\bigg(\frac{-\|y\|^2}{2\sigma^2}\bigg)}\;\;\;\; [Substituting]\\
+        &= \phi'(x)^T\phi'(y)
+    \end{align*}
+    where, $\phi'(x) = \phi(x)\exp{\big(\frac{-\|x\|^2}{2\sigma^2}\big)}$\\
+    
+$\therefore$ Since a feature map $\phi'$ exists, $\exp\big({\frac{-\|x-y\|^2}{2\sigma^2}}\big)$ is a valid kernel.\\
+Hence, proved!
+
+
+\pagebreak
+\subsection{CS 337: Simple Kernel Design
+}
+
+\subsubsection{(i)}
+\textit{Is there a condition on $r_1$, $r_2$ such that the vanilla KMeans (vanilla means we need to run the algorithm as is on the given data without transformations of any kind) algorithm gives us the
+correct clusters? Explain with sound arguments.}
+
+\subsubsection{(ii)}
+\textit{For the configurations of $r_1$, $r_2$ that are not clusterable, can you suggest a kernel that will help KMeans identify the correct clusters? Specify both the transformation $\phi(x)$ and the kernel function $k(x, x')$. Further show that the kernel function you propose is a valid kernel.}\\
+
+The transformation $\phi(x)$ is defined as - 
+\[\phi(x) = \|x\|_2\]
+Consider the kernel as follows - 
+\[
+K(x, y) = \langle \phi(x), \phi(y) \rangle = \|x\|_2^2\|y\|_2^2\]
+To show that this is a valid Mercer Kernal, consider the square integrable function $g(x)$. Then, we have -
+\[
+\int_x\int_y K(x, y)g(x)g(y) dx dy = \int_x\int_y \|x\|^2 \|y\|^2 dx dy
+\]
+Using Fubini's theorem, the RHS can be written as - 
+\begin{align*}
+\int_x\int_y\|x\|^2\|y\|^2g(x)g(y)dx dy &= \bigg(\int_x\|x\|^2g(x)dx\bigg) \bigg(\int_y\|y\|^2g(y)dy\bigg)\\
+&= \bigg(\int_x\|x\|^2g(x)dx\bigg)^2 \geq 0  
+\end{align*}
+
+Therefore, the defined kernel is a valid Mercer Kernel!\\
+
+The results for the above defined kernel are presented below - 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{og3.png}
+    \caption{Original Data}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.32\linewidth]{k4-s1.png}
+    \includegraphics[width=0.32\linewidth]{k4-s2.png}
+    \includegraphics[width=0.32\linewidth]{k4-s3.png}
+    \caption{Kernel K-means clustered data}
+\end{figure}
+
+Refer to \verb|assignment_4.ipynb| for the implementation of Kernel K-means.\\
+
+The algorithm runs for \textbf{1000} iterations with an early stopping condition that the fraction of points for \verb|cluster_id| does not change should be less than $\mathbf{10^{-8}}$.\\
+For initialisation, the \verb|cluster_id| of each point in the data is randomly chosen from \{1, 2, ...k\} for k clusters (a bit similar to what is described in 1.1 (iii) - (B)).
+
+\end{document} 
